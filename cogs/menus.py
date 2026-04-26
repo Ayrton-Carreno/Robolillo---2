@@ -6,63 +6,63 @@ CATEGORIAS = {
     "🎵 Música": {
         "color": discord.Color.blue(),
         "comandos": [
-            ("`!join`", "Unirse al canal de voz"),
-            ("`!leave`", "Salir del canal de voz"),
-            ("`!play <canción>`", "Reproducir o agregar a la cola"),
-            ("`!pause`", "Pausar la música"),
-            ("`!resume`", "Reanudar la música"),
-            ("`!stop`", "Detener y limpiar la cola"),
-            ("`!skip`", "Saltar canción"),
-            ("`!cola`", "Ver la cola de reproducción"),
-            ("`!loop`", "Activar/desactivar repetir"),
-            ("`!limpiar_cola`", "Vaciar la cola"),
+            ("`$join`", "Unirse al canal de voz"),
+            ("`$leave`", "Salir del canal de voz"),
+            ("`$play <canción>`", "Reproducir o agregar a la cola"),
+            ("`$pause`", "Pausar la música"),
+            ("`$resume`", "Reanudar la música"),
+            ("`$stop`", "Detener y limpiar la cola"),
+            ("`$skip`", "Saltar canción"),
+            ("`$cola`", "Ver la cola de reproducción"),
+            ("`$loop`", "Activar/desactivar repetir"),
+            ("`$limpiar_cola`", "Vaciar la cola"),
         ]
     },
     "📥 Descargas": {
         "color": discord.Color.green(),
         "comandos": [
-            ("`!descargar <url>`", "Abre el panel de descarga"),
-            ("`!descargar_ayuda`", "Muestra los límites y opciones"),
+            ("`$descargar <url>`", "Abre el panel de descarga"),
+            ("`$descargar_ayuda`", "Muestra los límites y opciones"),
         ]
     },
     "🎮 Diversión": {
         "color": discord.Color.yellow(),
         "comandos": [
-            ("`!chiste`", "Chiste aleatorio (ES/EN/Chuck)"),
-            ("`!chiste es`", "Chiste en español"),
-            ("`!chiste en`", "Chiste en inglés"),
-            ("`!chiste chuck`", "Chiste de Chuck Norris"),
-            ("`!dado <caras>`", "Tirar un dado"),
-            ("`!moneda`", "Lanzar una moneda"),
-            ("`!chistoso`", "Menciona a alguien gracioso"),
-            ("`!eres_chistoso @usuario`", "Menciona a alguien específico"),
-            ("`!quien <pregunta>`", "Elige un miembro aleatorio"),
+            ("`$chiste`", "Chiste aleatorio (ES/EN/Chuck)"),
+            ("`$chiste es`", "Chiste en español"),
+            ("`$chiste en`", "Chiste en inglés"),
+            ("`$chiste chuck`", "Chiste de Chuck Norris"),
+            ("`$dado <caras>`", "Tirar un dado"),
+            ("`$moneda`", "Lanzar una moneda"),
+            ("`$chistoso`", "Menciona a alguien gracioso"),
+            ("`$eres_chistoso @usuario`", "Menciona a alguien específico"),
+            ("`$quien <pregunta>`", "Elige un miembro aleatorio"),
         ]
     },
     "🎲 Juegos": {
         "color": discord.Color.purple(),
         "comandos": [
-            ("`!tor @usuario`", "Verdad o Reto"),
-            ("`!ship @u1 @u2`", "Compatibilidad entre dos personas"),
-            ("`!versus @u1 @u2`", "Quién ganaría"),
-            ("`!insultar @usuario`", "Insulto gracioso"),
-            ("`!trivia`", "Pregunta de trivia"),
-            ("`!conecta4 @usuario`", "Jugar Conecta 4"),
-            ("`!ppt @usuario`", "Piedra Papel Tijeras"),
+            ("`$tor @usuario`", "Verdad o Reto"),
+            ("`$ship @u1 @u2`", "Compatibilidad entre dos personas"),
+            ("`$versus @u1 @u2`", "Quién ganaría"),
+            ("`$insultar @usuario`", "Insulto gracioso"),
+            ("`$trivia`", "Pregunta de trivia con categorías"),
+            ("`$conecta4`", "Jugar Conecta 4 vs bot"),
+            ("`$ppt`", "Piedra Papel Tijeras vs bot"),
         ]
     },
     "🔨 Moderación": {
         "color": discord.Color.red(),
         "comandos": [
-            ("`!kick @usuario <razón>`", "Expulsar miembro"),
-            ("`!ban @usuario <razón>`", "Banear miembro"),
-            ("`!limpiar <cantidad>`", "Borrar mensajes"),
+            ("`$kick @usuario <razón>`", "Expulsar miembro"),
+            ("`$ban @usuario <razón>`", "Banear miembro"),
+            ("`$limpiar <cantidad>`", "Borrar mensajes"),
         ]
     },
     "🤖 IA": {
         "color": discord.Color.teal(),
         "comandos": [
-            ("`!ask <pregunta>`", "Pregúntale a Claude"),
+            ("`$ask <pregunta>`", "Pregúntale a Claude"),
         ]
     },
 }
@@ -101,14 +101,15 @@ class AyudaView(discord.ui.View):
     def __init__(self, autor: discord.Member):
         super().__init__(timeout=60)
         self.autor = autor
+        self.message = None
         self._agregar_botones()
 
     def _agregar_botones(self):
-        for categoria in CATEGORIAS:
+        for i, categoria in enumerate(CATEGORIAS):
             boton = discord.ui.Button(
                 label=categoria,
                 style=discord.ButtonStyle.primary,
-                row=list(CATEGORIAS.keys()).index(categoria) // 3
+                row=i // 3
             )
             boton.callback = self._hacer_callback(categoria)
             self.add_item(boton)
@@ -127,9 +128,10 @@ class AyudaView(discord.ui.View):
                 return await interaction.response.send_message(
                     "❌ Este menú no es tuyo.", ephemeral=True
                 )
+            vista = CategoriaView(self.autor, categoria, interaction.message)
             await interaction.response.edit_message(
                 embed=embed_categoria(categoria),
-                view=CategoriaView(self.autor, categoria)
+                view=vista
             )
         return callback
 
@@ -148,10 +150,11 @@ class AyudaView(discord.ui.View):
 
 # ── Vista de categoría ──────────────────────────────────
 class CategoriaView(discord.ui.View):
-    def __init__(self, autor: discord.Member, categoria: str):
+    def __init__(self, autor: discord.Member, categoria: str, message=None):
         super().__init__(timeout=60)
         self.autor = autor
         self.categoria = categoria
+        self.message = message
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id != self.autor.id:
@@ -163,9 +166,11 @@ class CategoriaView(discord.ui.View):
 
     @discord.ui.button(label="⬅️ Regresar", style=discord.ButtonStyle.secondary)
     async def regresar(self, interaction: discord.Interaction, button: discord.ui.Button):
+        vista = AyudaView(self.autor)
+        vista.message = interaction.message
         await interaction.response.edit_message(
             embed=embed_principal(),
-            view=AyudaView(self.autor)
+            view=vista
         )
 
     @discord.ui.button(label="🗑️ Cerrar", style=discord.ButtonStyle.danger)
@@ -186,7 +191,7 @@ class Ayuda(commands.Cog):
 
     @commands.command(name="ayuda")
     async def ayuda(self, ctx):
-        print(f"📖 !ayuda por {ctx.author}")
+        print(f"📖 $ayuda por {ctx.author}")
         view = AyudaView(ctx.author)
         msg = await ctx.send(embed=embed_principal(), view=view)
         view.message = msg
