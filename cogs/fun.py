@@ -81,10 +81,10 @@ class Diversion(commands.Cog):
     @commands.command()
     async def gay(self, ctx):
         await ctx.message.delete()
-        mobleminik = discord.utils.get(ctx.guild.members, name="mobleminik")
-        if not mobleminik:
+        blindwalker = discord.utils.get(ctx.guild.members, name="blindwalker")
+        if not blindwalker:
             return
-        msg = await ctx.send(f"🎉 {mobleminik.mention} eres guapo 😂")
+        msg = await ctx.send(f"🎉 {blindwalker.mention} eres guapo 😂")
         await msg.delete(delay=3)
 
     # ── Chistoso aleatorio ──────────────────────────────
