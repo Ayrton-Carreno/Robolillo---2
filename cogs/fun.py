@@ -84,7 +84,7 @@ class Diversion(commands.Cog):
         blindwalker = discord.utils.get(ctx.guild.members, name="blindwalker")
         if not blindwalker:
             return
-        msg = await ctx.send(f"🎉 {blindwalker.mention} eres guapo 😂")
+        msg = await ctx.send(f"🎉 {blindwalker.mention} eres puto 😂")
         await msg.delete(delay=3)
 
     # ── Chistoso aleatorio ──────────────────────────────
