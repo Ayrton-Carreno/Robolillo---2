@@ -18,7 +18,7 @@ async def on_ready():
     print(f"✅ Robolillo conectado como {bot.user}")
     print(f"📡 Servidores conectados: {[g.name for g in bot.guilds]}")
     
-    cogs = cogs = ["cogs.music", "cogs.fun", "cogs.moderation", "cogs.download", "cogs.menus", "cogs.games"]
+    cogs = cogs = ["cogs.music", "cogs.fun", "cogs.moderation", "cogs.downloads", "cogs.help", "cogs.games", "cogs.language"]
     for cog in cogs:
         try:
             await bot.load_extension(cog)
