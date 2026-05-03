@@ -1,0 +1,13 @@
+# ── Discord ─────────────────────────────────────────────
+discord.py[voice]   # Librería principal del bot, [voice] incluye soporte de audio
+PyNaCl              # Encriptación necesaria para canales de voz
+
+# ── Descargas y música ───────────────────────────────────
+yt-dlp              # Descarga audio/video de YouTube, Instagram, TikTok y más
+aiohttp             # Peticiones HTTP asíncronas para APIs externas
+
+# ── Configuración ────────────────────────────────────────
+python-dotenv       # Lee las variables del archivo .env
+
+# ── IA ──────────────────────────────────────────────────
+anthropic           # API de Claude para el comando $ask
