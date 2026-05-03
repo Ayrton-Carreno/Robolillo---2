@@ -3,7 +3,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv("token.env")
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
@@ -18,7 +18,7 @@ async def on_ready():
     print(f"✅ Robolillo conectado como {bot.user}")
     print(f"📡 Servidores conectados: {[g.name for g in bot.guilds]}")
     
-    cogs = cogs = ["cogs.music", "cogs.fun", "cogs.moderation", "cogs.downloads", "cogs.help", "cogs.games", "cogs.language"]
+    cogs = cogs = ["Cogs.music", "Cogs.fun", "Cogs.moderation", "Cogs.downloads", "Cogs.help", "Cogs.games", "Cogs.language", "Cogs.ai"]
     for cog in cogs:
         try:
             await bot.load_extension(cog)
