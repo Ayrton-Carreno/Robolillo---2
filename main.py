@@ -3,7 +3,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 
-load_dotenv("token.env")
+load_dotenv(r"C:\Users\gerya\Documents\Programación\token.env")
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
