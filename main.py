@@ -11,14 +11,14 @@ intents.message_content = True
 intents.members = True
 intents.presences = True
 
-bot = commands.Bot(command_prefix="$", intents=intents)
+bot = commands.Bot(command_prefix="$", intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
     print(f"✅ Robolillo conectado como {bot.user}")
     print(f"📡 Servidores conectados: {[g.name for g in bot.guilds]}")
     
-    cogs = cogs = ["cogs.music", "cogs.fun", "cogs.moderation", "cogs.downloads", "cogs.help", "cogs.games", "cogs.language", "cogs.ai"]
+    cogs = ["Cogs.music", "Cogs.fun", "Cogs.moderation", "Cogs.downloads", "Cogs.help", "Cogs.games", "Cogs.language", "Cogs.ai"]
     for cog in cogs:
         try:
             await bot.load_extension(cog)

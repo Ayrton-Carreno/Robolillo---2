@@ -20,7 +20,7 @@ class Moderacion(commands.Cog):
         await miembro.ban(reason=razon)
         await ctx.send(f"🔨 {miembro.mention} fue baneado. Razón: {razon}")
 
-    @commands.command()
+    @commands.command(name="purge", aliases=["limpiar"])
     @commands.has_permissions(manage_messages=True)
     async def limpiar(self, ctx, cantidad: int = 5):
         print(f"🧹 !limpiar ejecutado por {ctx.author} | Cantidad: {cantidad}")

@@ -2,6 +2,8 @@
 
 El prefijo del bot es `$`
 
+> Los nombres anteriores en español (`$chiste`, `$dado`, `$cola`, `$ayuda`...) siguen funcionando como alias.
+
 ---
 
 ## 🎵 Música
@@ -16,9 +18,9 @@ El prefijo del bot es `$`
 | `$resume` | Reanudar la música |
 | `$stop` | Detener y limpiar la cola |
 | `$skip` | Saltar canción |
-| `$cola` | Ver la cola de reproducción |
+| `$queue` | Ver la cola de reproducción |
 | `$loop` | Activar/desactivar repetir |
-| `$limpiar_cola` | Vaciar la cola |
+| `$clear` | Vaciar la cola |
 
 ---
 
@@ -27,8 +29,7 @@ El prefijo del bot es `$`
 
 | Comando | Descripción |
 |---------|-------------|
-| `$descargar <url>` | Abre el panel interactivo de descarga |
-| `$descargar_ayuda` | Ver límites y opciones disponibles |
+| `$download <url>` | Abre el panel interactivo de descarga |
 
 **Plataformas soportadas:** YouTube, Instagram, TikTok y más.
 
@@ -42,15 +43,15 @@ El prefijo del bot es `$`
 
 | Comando | Descripción |
 |---------|-------------|
-| `$chiste` | Chiste aleatorio (ES/EN/Chuck Norris) |
-| `$chiste es` | Chiste en español |
-| `$chiste en` | Chiste en inglés |
-| `$chiste chuck` | Chiste de Chuck Norris |
-| `$dado <caras>` | Tirar un dado (default: 6 caras) |
-| `$moneda` | Lanzar una moneda |
-| `$chistoso` | Menciona a un miembro aleatorio como chistoso |
-| `$eres_chistoso @usuario` | Menciona a alguien específico como chistoso |
-| `$quien <pregunta>` | Elige un miembro aleatorio para responder |
+| `$joke` | Chiste aleatorio (ES/EN/Chuck Norris) |
+| `$joke es` | Chiste en español |
+| `$joke en` | Chiste en inglés |
+| `$joke chuck` | Chiste de Chuck Norris |
+| `$dice <caras>` | Tirar un dado (default: 6 caras) |
+| `$coin` | Lanzar una moneda |
+| `$funny` | Menciona a un miembro aleatorio como chistoso |
+| `$youre_funny @usuario` | Menciona a alguien específico como chistoso |
+| `$who <pregunta>` | Elige un miembro aleatorio para responder |
 
 ---
 
@@ -58,13 +59,13 @@ El prefijo del bot es `$`
 
 | Comando | Descripción |
 |---------|-------------|
-| `$ppt` | Piedra Papel Tijeras vs bot |
+| `$rps` | Piedra Papel Tijeras vs bot |
 | `$tor @usuario` | Verdad o Reto |
-| `$insultar @usuario` | Insulto gracioso aleatorio |
+| `$insult @usuario` | Insulto gracioso aleatorio |
 | `$ship @u1 @u2` | Calcula la compatibilidad entre dos personas |
 | `$versus @u1 @u2` | Decide quién ganaría en distintos contextos |
 | `$trivia` | Pregunta de trivia con categorías |
-| `$conecta4` | Jugar Conecta 4 vs bot |
+| `$connect4` | Jugar Conecta 4 vs bot |
 
 **Categorías de trivia:**
 - 🎮 Videojuegos
@@ -86,7 +87,7 @@ El prefijo del bot es `$`
 |---------|-------------|
 | `$kick @usuario <razón>` | Expulsar miembro del servidor |
 | `$ban @usuario <razón>` | Banear miembro del servidor |
-| `$limpiar <cantidad>` | Borrar mensajes del canal (default: 5) |
+| `$purge <cantidad>` | Borrar mensajes del canal (default: 5) |
 
 ---
 
@@ -94,11 +95,11 @@ El prefijo del bot es `$`
 
 | Comando | Descripción |
 |---------|-------------|
-| `$idioma` | Ver idioma actual |
-| `$idioma es` | Cambiar tu idioma a español |
-| `$idioma en` | Cambiar tu idioma a inglés |
-| `$idioma es server` | Cambiar idioma del servidor a español (admin) |
-| `$idioma en server` | Cambiar idioma del servidor a inglés (admin) |
+| `$language` | Ver idioma actual |
+| `$language es` | Cambiar tu idioma a español |
+| `$language en` | Cambiar tu idioma a inglés |
+| `$language es server` | Cambiar idioma del servidor a español (admin) |
+| `$language en server` | Cambiar idioma del servidor a inglés (admin) |
 
 ---
 
@@ -115,4 +116,5 @@ El prefijo del bot es `$`
 
 | Comando | Descripción |
 |---------|-------------|
-| `$ayuda` | Abre el menú interactivo de ayuda |
+| `$help` | Abre el menú interactivo de ayuda |
+| `$help <comando>` | Muestra qué hace un comando, cómo se usa y sus alias |

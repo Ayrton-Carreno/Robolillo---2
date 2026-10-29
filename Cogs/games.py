@@ -166,7 +166,7 @@ class Juegos(commands.Cog):
         print("🎲 Cog Juegos inicializado")
 
     # ── Piedra Papel Tijeras ────────────────────────────
-    @commands.command(name="ppt")
+    @commands.command(name="rps", aliases=["ppt"])
     async def piedra_papel_tijeras(self, ctx):
         print(f"✊ !ppt por {ctx.author}")
         embed = discord.Embed(
@@ -194,7 +194,7 @@ class Juegos(commands.Cog):
         view.message = msg
 
     # ── Insultar ────────────────────────────────────────
-    @commands.command()
+    @commands.command(name="insult", aliases=["insultar"])
     async def insultar(self, ctx, miembro: discord.Member):
         insulto = random.choice(INSULTOS)
         await ctx.send(f"🔥 {miembro.mention} {insulto}")
@@ -240,7 +240,7 @@ class Juegos(commands.Cog):
         view.message = msg
 
     # ── Conecta 4 ───────────────────────────────────────
-    @commands.command(name="conecta4")
+    @commands.command(name="connect4", aliases=["conecta4"])
     async def conecta4(self, ctx):
         print(f"🔴 !conecta4 por {ctx.author}")
         tablero = crear_tablero()

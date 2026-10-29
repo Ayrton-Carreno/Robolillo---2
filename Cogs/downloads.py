@@ -172,7 +172,7 @@ class Descargas(commands.Cog):
 
         return None
 
-    @commands.command(name="download")
+    @commands.command(name="download", aliases=["descargar"])
     async def descargar(self, ctx, *, url: str):
         print(f"📥 !descargar | {ctx.author} | URL: {url}")
         panel = PanelDescarga(self, ctx, url)

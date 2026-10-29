@@ -151,7 +151,7 @@ class Musica(commands.Cog):
         else:
             await ctx.send("❌ No hay nada reproduciéndose.")
 
-    @commands.command()
+    @commands.command(aliases=["cola"])
     async def queue(self, ctx):
         print(f"📋 !cola por {ctx.author}")
         if not self.actual and not self.cola:
@@ -184,7 +184,7 @@ class Musica(commands.Cog):
         estado = "✅ activado" if self.loop else "❌ desactivado"
         await ctx.send(f"🔁 Modo repetir {estado}.")
 
-    @commands.command()
+    @commands.command(aliases=["limpiar_cola"])
     async def clear(self, ctx):
         print(f"🧹 !limpiar_cola por {ctx.author}")
         self.cola.clear()

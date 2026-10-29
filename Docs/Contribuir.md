@@ -68,7 +68,10 @@ Robolillo - 2/
 │   ├── help.py
 │   └── ai.py
 ├── utils/              ← Funciones compartidas
-│   └── translations.py
+│   ├── translation.py  ← Carga los idiomas y la función t()
+│   └── lang/           ← Un JSON por idioma
+│       ├── es.json
+│       └── en.json
 ├── docs/               ← Documentación
 │   ├── INSTALLATION.md
 │   ├── COMMANDS.md
@@ -115,6 +118,21 @@ class NombreCog(commands.Cog):
 async def setup(bot):
     await bot.add_cog(NombreCog(bot))
 ```
+
+---
+
+## 🌐 Agregar un idioma
+Los textos del bot viven en `Utils/lang/`, un archivo JSON por idioma. El bot carga todos los `.json` de esa carpeta al iniciar.
+
+1. Copia `Utils/lang/es.json` y renómbralo con el código del idioma (ej. `pt.json`, `fr.json`).
+2. Cambia `"nombre_idioma"` (ej. `"Português 🇧🇷"`) y traduce los textos.
+   - **No cambies las claves** (lo de la izquierda), solo los valores.
+   - Deja intactos los `{placeholders}` como `{usuario}` o `{titulo}`.
+3. Reinicia el bot. El idioma aparece en `$language` y se activa con `$language pt`.
+
+Si a tu archivo le falta alguna clave, el bot usa el texto en español para esa clave, así que puedes traducir poco a poco.
+
+Para agregar un **texto nuevo**, ponlo en `es.json` (obligatorio) y en los demás idiomas, y úsalo con `t(idioma, "mi_clave")`.
 
 ---
 

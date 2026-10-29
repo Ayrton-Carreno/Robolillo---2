@@ -1,113 +1,147 @@
 import discord
 from discord.ext import commands
+from Utils.translation import t
 
 # ── Comandos por categoría ──────────────────────────────
+# (comando, argumentos) → la descripción sale de Utils/lang/<idioma>.json: "cmd_<comando>"
 CATEGORIAS = {
-    "🎵 Música": {
+    "cat_musica": {
         "color": discord.Color.blue(),
         "comandos": [
-            ("`$join`", "Unirse al canal de voz"),
-            ("`$leave`", "Salir del canal de voz"),
-            ("`$play <canción>`", "Reproducir o agregar a la cola"),
-            ("`$pause`", "Pausar la música"),
-            ("`$resume`", "Reanudar la música"),
-            ("`$stop`", "Detener y limpiar la cola"),
-            ("`$skip`", "Saltar canción"),
-            ("`$cola`", "Ver la cola de reproducción"),
-            ("`$loop`", "Activar/desactivar repetir"),
-            ("`$limpiar_cola`", "Vaciar la cola"),
+            ("join", ""),
+            ("leave", ""),
+            ("play", "<song>"),
+            ("pause", ""),
+            ("resume", ""),
+            ("stop", ""),
+            ("skip", ""),
+            ("queue", ""),
+            ("loop", ""),
+            ("clear", ""),
         ]
     },
-    "📥 Descargas": {
+    "cat_descargas": {
         "color": discord.Color.green(),
         "comandos": [
-            ("`$descargar <url>`", "Abre el panel de descarga"),
-            ("`$descargar_ayuda`", "Muestra los límites y opciones"),
+            ("download", "<url>"),
         ]
     },
-    "🎮 Diversión": {
+    "cat_diversion": {
         "color": discord.Color.yellow(),
         "comandos": [
-            ("`$chiste`", "Chiste aleatorio (ES/EN/Chuck)"),
-            ("`$chiste es`", "Chiste en español"),
-            ("`$chiste en`", "Chiste en inglés"),
-            ("`$chiste chuck`", "Chiste de Chuck Norris"),
-            ("`$dado <caras>`", "Tirar un dado"),
-            ("`$moneda`", "Lanzar una moneda"),
-            ("`$chistoso`", "Menciona a alguien gracioso"),
-            ("`$eres_chistoso @usuario`", "Menciona a alguien específico"),
-            ("`$quien <pregunta>`", "Elige un miembro aleatorio"),
+            ("joke", "[es|en|chuck]"),
+            ("dice", "[sides]"),
+            ("coin", ""),
+            ("funny", ""),
+            ("youre_funny", "@user"),
+            ("who", "<question>"),
         ]
     },
-    "🎲 Juegos": {
+    "cat_juegos": {
         "color": discord.Color.purple(),
         "comandos": [
-            ("`$tor @usuario`", "Verdad o Reto"),
-            ("`$ship @u1 @u2`", "Compatibilidad entre dos personas"),
-            ("`$versus @u1 @u2`", "Quién ganaría"),
-            ("`$insultar @usuario`", "Insulto gracioso"),
-            ("`$trivia`", "Pregunta de trivia con categorías"),
-            ("`$conecta4`", "Jugar Conecta 4 vs bot"),
-            ("`$ppt`", "Piedra Papel Tijeras vs bot"),
+            ("tor", "[@user]"),
+            ("ship", "@user1 @user2"),
+            ("versus", "@user1 @user2"),
+            ("insult", "@user"),
+            ("trivia", ""),
+            ("connect4", ""),
+            ("rps", ""),
         ]
     },
-    "🔨 Moderación": {
+    "cat_moderacion": {
         "color": discord.Color.red(),
         "comandos": [
-            ("`$kick @usuario <razón>`", "Expulsar miembro"),
-            ("`$ban @usuario <razón>`", "Banear miembro"),
-            ("`$limpiar <cantidad>`", "Borrar mensajes"),
+            ("kick", "@user [reason]"),
+            ("ban", "@user [reason]"),
+            ("purge", "[amount]"),
         ]
     },
-    "🤖 IA": {
+    "cat_idioma": {
+        "color": discord.Color.blurple(),
+        "comandos": [
+            ("language", "[es|en] [server]"),
+        ]
+    },
+    "cat_ia": {
         "color": discord.Color.teal(),
         "comandos": [
-            ("`$ask <pregunta>`", "Pregúntale a Claude"),
+            ("ask", "<question>"),
         ]
     },
 }
 
+def uso(comando: str, args: str) -> str:
+    return f"`${comando} {args}`" if args else f"`${comando}`"
+
+def buscar_comando(nombre: str):
+    for categoria, data in CATEGORIAS.items():
+        for comando, args in data["comandos"]:
+            if comando == nombre:
+                return categoria, comando, args
+    return None
+
 # ── Embed principal ─────────────────────────────────────
-def embed_principal():
+def embed_principal(idioma: str):
     embed = discord.Embed(
-        title="🤖 Robolillo 2.0 — Ayuda",
-        description="Selecciona una categoría para ver sus comandos.",
+        title=t(idioma, "ayuda_titulo"),
+        description=f"{t(idioma, 'ayuda_desc')}\n{t(idioma, 'ayuda_detalle_hint')}",
         color=discord.Color.blurple()
     )
-    for categoria in CATEGORIAS:
-        total = len(CATEGORIAS[categoria]["comandos"])
+    for categoria, data in CATEGORIAS.items():
         embed.add_field(
-            name=categoria,
-            value=f"`{total}` comandos",
+            name=t(idioma, categoria),
+            value=t(idioma, "ayuda_num_comandos", total=len(data["comandos"])),
             inline=True
         )
-    embed.set_footer(text="Usa los botones para navegar • 🗑️ para cerrar")
+    embed.set_footer(text=t(idioma, "ayuda_footer"))
     return embed
 
 # ── Embed de categoría ──────────────────────────────────
-def embed_categoria(nombre: str):
-    data = CATEGORIAS[nombre]
+def embed_categoria(idioma: str, categoria: str):
+    data = CATEGORIAS[categoria]
     embed = discord.Embed(
-        title=f"{nombre} — Comandos",
+        title=t(idioma, "ayuda_comandos_titulo", categoria=t(idioma, categoria)),
         color=data["color"]
     )
-    for cmd, desc in data["comandos"]:
-        embed.add_field(name=cmd, value=desc, inline=False)
-    embed.set_footer(text="⬅️ Regresar al menú principal • 🗑️ Cerrar")
+    for comando, args in data["comandos"]:
+        embed.add_field(name=uso(comando, args), value=t(idioma, f"cmd_{comando}"), inline=False)
+    embed.set_footer(text=t(idioma, "comandos_footer"))
+    return embed
+
+# ── Embed de un comando ─────────────────────────────────
+def embed_comando(idioma: str, cmd: commands.Command):
+    encontrado = buscar_comando(cmd.name)
+    categoria, comando, args = encontrado if encontrado else (None, cmd.name, "")
+    embed = discord.Embed(
+        title=f"${comando}",
+        description=t(idioma, f"cmd_{comando}"),
+        color=CATEGORIAS[categoria]["color"] if categoria else discord.Color.blurple()
+    )
+    embed.add_field(name=t(idioma, "ayuda_uso"), value=uso(comando, args), inline=False)
+    if cmd.aliases:
+        embed.add_field(
+            name=t(idioma, "ayuda_alias"),
+            value=", ".join(f"`${a}`" for a in cmd.aliases),
+            inline=False
+        )
+    if categoria:
+        embed.set_footer(text=t(idioma, categoria))
     return embed
 
 # ── Vista principal ─────────────────────────────────────
 class AyudaView(discord.ui.View):
-    def __init__(self, autor: discord.Member):
+    def __init__(self, autor: discord.Member, idioma: str):
         super().__init__(timeout=60)
         self.autor = autor
+        self.idioma = idioma
         self.message = None
         self._agregar_botones()
 
     def _agregar_botones(self):
         for i, categoria in enumerate(CATEGORIAS):
             boton = discord.ui.Button(
-                label=categoria,
+                label=t(self.idioma, categoria),
                 style=discord.ButtonStyle.primary,
                 row=i // 3
             )
@@ -115,7 +149,7 @@ class AyudaView(discord.ui.View):
             self.add_item(boton)
 
         cerrar = discord.ui.Button(
-            label="🗑️ Cerrar",
+            label=t(self.idioma, "btn_cerrar"),
             style=discord.ButtonStyle.danger,
             row=2
         )
@@ -126,11 +160,11 @@ class AyudaView(discord.ui.View):
         async def callback(interaction: discord.Interaction):
             if interaction.user.id != self.autor.id:
                 return await interaction.response.send_message(
-                    "❌ Este menú no es tuyo.", ephemeral=True
+                    t(self.idioma, "menu_no_tuyo"), ephemeral=True
                 )
-            vista = CategoriaView(self.autor, categoria, interaction.message)
+            vista = CategoriaView(self.autor, self.idioma, interaction.message)
             await interaction.response.edit_message(
-                embed=embed_categoria(categoria),
+                embed=embed_categoria(self.idioma, categoria),
                 view=vista
             )
         return callback
@@ -138,7 +172,7 @@ class AyudaView(discord.ui.View):
     async def cerrar(self, interaction: discord.Interaction):
         if interaction.user.id != self.autor.id:
             return await interaction.response.send_message(
-                "❌ Este menú no es tuyo.", ephemeral=True
+                t(self.idioma, "menu_no_tuyo"), ephemeral=True
             )
         await interaction.message.delete()
 
@@ -150,26 +184,28 @@ class AyudaView(discord.ui.View):
 
 # ── Vista de categoría ──────────────────────────────────
 class CategoriaView(discord.ui.View):
-    def __init__(self, autor: discord.Member, categoria: str, message=None):
+    def __init__(self, autor: discord.Member, idioma: str, message=None):
         super().__init__(timeout=60)
         self.autor = autor
-        self.categoria = categoria
+        self.idioma = idioma
         self.message = message
+        self.regresar.label = t(idioma, "btn_regresar")
+        self.cerrar.label = t(idioma, "btn_cerrar")
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id != self.autor.id:
             await interaction.response.send_message(
-                "❌ Este menú no es tuyo.", ephemeral=True
+                t(self.idioma, "menu_no_tuyo"), ephemeral=True
             )
             return False
         return True
 
     @discord.ui.button(label="⬅️ Regresar", style=discord.ButtonStyle.secondary)
     async def regresar(self, interaction: discord.Interaction, button: discord.ui.Button):
-        vista = AyudaView(self.autor)
+        vista = AyudaView(self.autor, self.idioma)
         vista.message = interaction.message
         await interaction.response.edit_message(
-            embed=embed_principal(),
+            embed=embed_principal(self.idioma),
             view=vista
         )
 
@@ -189,11 +225,22 @@ class Ayuda(commands.Cog):
         self.bot = bot
         print("📖 Cog Ayuda inicializado")
 
-    @commands.command(name="ayuda")
-    async def ayuda(self, ctx):
-        print(f"📖 $ayuda por {ctx.author}")
-        view = AyudaView(ctx.author)
-        msg = await ctx.send(embed=embed_principal(), view=view)
+    @commands.command(name="help", aliases=["ayuda"])
+    async def help(self, ctx, comando: str = None):
+        print(f"📖 $help por {ctx.author} | Comando: {comando}")
+        # Import aquí: load_extension crea su propio módulo, así se usan los mismos diccionarios del cog
+        from Cogs.language import get_idioma
+        idioma = get_idioma(ctx.guild.id if ctx.guild else 0, ctx.author.id)
+
+        # $help <comando> → detalles de un comando
+        if comando:
+            cmd = self.bot.get_command(comando.lstrip("$").lower())
+            if cmd is None or (buscar_comando(cmd.name) is None and cmd.name != "help"):
+                return await ctx.send(t(idioma, "ayuda_no_encontrado", comando=comando))
+            return await ctx.send(embed=embed_comando(idioma, cmd))
+
+        view = AyudaView(ctx.author, idioma)
+        msg = await ctx.send(embed=embed_principal(idioma), view=view)
         view.message = msg
 
 async def setup(bot):

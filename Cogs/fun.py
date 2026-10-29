@@ -13,7 +13,7 @@ class Diversion(commands.Cog):
         print("🎮 Cog Diversión inicializado")
 
     # ── Chiste con APIs rotando ─────────────────────────
-    @commands.command()
+    @commands.command(name="joke", aliases=["chiste"])
     async def chiste(self, ctx, idioma: str = None):
         print(f"😂 !chiste por {ctx.author} | Idioma: {idioma}")
 
@@ -64,7 +64,7 @@ class Diversion(commands.Cog):
                 await ctx.send("❌ No pude conectarme a la API de chistes.")
 
     # ── Dado ────────────────────────────────────────────
-    @commands.command()
+    @commands.command(name="dice", aliases=["dado"])
     async def dado(self, ctx, caras: int = 6):
         if caras < 2:
             return await ctx.send("❌ El dado necesita al menos 2 caras.")
@@ -72,7 +72,7 @@ class Diversion(commands.Cog):
         await ctx.send(f"🎲 Tiraste un dado de **{caras}** caras: **{resultado}**")
 
     # ── Moneda ──────────────────────────────────────────
-    @commands.command()
+    @commands.command(name="coin", aliases=["moneda"])
     async def moneda(self, ctx):
         resultado = random.choice(["Cara 🪙", "Cruz 🔄"])
         await ctx.send(f"Resultado: **{resultado}**")
@@ -88,7 +88,7 @@ class Diversion(commands.Cog):
         await msg.delete(delay=3)
 
     # ── Chistoso aleatorio ──────────────────────────────
-    @commands.command()
+    @commands.command(name="funny", aliases=["chistoso"])
     async def chistoso(self, ctx):
         miembros = [m for m in ctx.guild.members if not m.bot]
         if not miembros:
@@ -97,12 +97,12 @@ class Diversion(commands.Cog):
         await ctx.send(f"🎉 {elegido.mention} eres chistoso 😂")
 
     # ── Eres chistoso ───────────────────────────────────
-    @commands.command()
+    @commands.command(name="youre_funny", aliases=["eres_chistoso"])
     async def eres_chistoso(self, ctx, miembro: discord.Member):
         await ctx.send(f"🎉 {miembro.mention} eres chistoso 😂")
 
     # ── Quien ───────────────────────────────────────────
-    @commands.command()
+    @commands.command(name="who", aliases=["quien"])
     async def quien(self, ctx, *, pregunta: str):
         miembros = [m for m in ctx.guild.members if not m.bot]
         elegido = random.choice(miembros)
